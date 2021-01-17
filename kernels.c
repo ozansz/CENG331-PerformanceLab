@@ -117,7 +117,7 @@ void naive_bokeh(int dim, pixel *src, short *flt, pixel *dst) {
 
     for(i = 0; i < dim; i++) {
         for(j = 0; j < dim; j++) {
-            if ( !flt[RIDX(i, j, dim)] )
+            if (!flt[RIDX(i, j, dim)] )
                 dst[RIDX(i, j, dim)] = avg(i, j, dim, src);
             else
                 dst[RIDX(i, j, dim)] = src[RIDX(i, j, dim)];
@@ -132,40 +132,40 @@ char bokeh_desc[] = "bokeh4: sexy + unrolling";
 void bokeh(int dim, pixel *src, short *flt, pixel *dst) {
     unsigned int t, j, rij;
 
-    if (!flt[0]) {
+    if (~flt[0]) {
         dst->red = (unsigned short)(((unsigned int)src->red +(unsigned int)(src+1)->red +(unsigned int)(src+dim)->red +(unsigned int)(src+(dim +1))->red)>>2);
         dst->blue = (unsigned short)(((unsigned int) src->blue+(unsigned int) (src+1)->blue+ (unsigned int) (src+dim)->blue+ (unsigned int) (src+(dim +1))->blue)>>2);
         dst->green = (unsigned short)(( (unsigned int) src->green+ (unsigned int) (src+1)->green+ (unsigned int) (src+dim)->green+ (unsigned int) (src+(dim +1))->green)>>2);
     } else EQUALIZE_PX(dst[0],  src[0])
    
-    if (!flt[(dim  - 1 )]) {
+    if (~flt[(dim  - 1 )]) {
         (dst+(dim  - 1 ))->red = (unsigned short)(( (unsigned int) (src+(dim  - 1 ))->red + (unsigned int) (src+dim-2)->red + (unsigned int) (src+2 * dim -1)->red + (unsigned int) (src+2 * dim -2)->red)>>2);
         (dst+(dim  - 1 ))->blue = (unsigned short)(( (unsigned int) (src+(dim  - 1 ))->blue+ (unsigned int) (src+dim-2)->blue+ (unsigned int) (src+2 * dim -1)->blue+ (unsigned int) (src+2 * dim -2)->blue)>>2);
         (dst+(dim  - 1 ))->green = (unsigned short)(( (unsigned int) (src+(dim  - 1 ))->green+ (unsigned int) (src+dim-2)->green+ (unsigned int) (src+2 * dim -1)->green+ (unsigned int) (src+2 * dim -2)->green)>>2);
     } else EQUALIZE_PX(dst[dim  - 1 ],  src[dim  - 1 ])
 
     for (t = dim - 2, j = dim; t--; j += dim) {
-        if (!flt[j]) {
+        if (~flt[j]) {
             (dst+j)->red = (unsigned short)(((unsigned int) (src+j)->red + (unsigned int) (src+j-dim)->red + (unsigned int) (src+j+1)->red + (unsigned int) (src+j+dim)->red + (unsigned int) (src+j+(dim +1))->red + (unsigned int) (src+j-(dim  - 1 ))->red)/6);
             (dst+j)->green = (unsigned short)(( (unsigned int) (src+j)->green+ (unsigned int) (src+j-dim)->green+ (unsigned int) (src+j+1)->green+ (unsigned int) (src+j+dim)->green+ (unsigned int) (src+j+(dim +1))->green+ (unsigned int) (src+j-(dim  - 1 ))->green)/6);
             (dst+j)->blue = (unsigned short)(( (unsigned int) (src+j)->blue+ (unsigned int) (src+j-dim)->blue+ (unsigned int) (src+j+1)->blue+ (unsigned int) (src+j+dim)->blue+ (unsigned int) (src+j+(dim +1))->blue+ (unsigned int) (src+j-(dim  - 1 ))->blue)/6);
         } else EQUALIZE_PX(dst[j], src[j])
     }
 
-    if (!flt[(dim  * dim - dim)]) {
+    if (~flt[(dim  * dim - dim)]) {
         (dst+(dim  * dim - dim))->red = (unsigned short)(( (unsigned int) (src+(dim  * dim - dim))->red + (unsigned int) (src+(dim  * dim - dim)+1)->red + (unsigned int) (src+(dim * dim - 2 * dim))->red + (unsigned int) (src+(dim * dim - 2 * dim)+1)->red)>>2);
         (dst+(dim  * dim - dim))->blue = (unsigned short)(( (unsigned int) (src+(dim  * dim - dim))->blue+ (unsigned int) (src+(dim  * dim - dim)+1)->blue+ (unsigned int) (src+(dim * dim - 2 * dim))->blue+ (unsigned int) (src+(dim * dim - 2 * dim)+1)->blue)>>2);
         (dst+(dim  * dim - dim))->green = (unsigned short)(( (unsigned int) (src+(dim  * dim - dim))->green+ (unsigned int) (src+(dim  * dim - dim)+1)->green+ (unsigned int) (src+(dim * dim - 2 * dim))->green+ (unsigned int) (src+(dim * dim - 2 * dim)+1)->green)>>2);
     } else EQUALIZE_PX(dst[(dim  * dim - dim)], src[(dim  * dim - dim)])
 
-    if (!flt[(dim  * dim - 1)]) {
+    if (~flt[(dim  * dim - 1)]) {
         (dst+dim  * dim -1)->red = (unsigned short)(( (unsigned int) (src+dim  * dim -1)->red + (unsigned int) (src+dim  * dim -2)->red + (unsigned int) (src+(dim  * dim - dim)-1)->red + (unsigned int) (src+(dim  * dim - dim)-2)->red)>>2);
         (dst+dim  * dim -1)->blue = (unsigned short)(( (unsigned int) (src+dim  * dim -1)->blue+ (unsigned int) (src+dim  * dim -2)->blue+ (unsigned int) (src+(dim  * dim - dim)-1)->blue+ (unsigned int) (src+(dim  * dim - dim)-2)->blue)>>2);
         (dst+dim  * dim -1)->green = (unsigned short)(( (unsigned int) (src+dim  * dim -1)->green+ (unsigned int) (src+dim  * dim -2)->green+ (unsigned int) (src+(dim  * dim - dim)-1)->green+ (unsigned int) (src+(dim  * dim - dim)-2)->green)>>2);
     } else EQUALIZE_PX(dst[(dim  * dim - 1)],  src[(dim  * dim - 1)])
 
     for (t = dim - 2, j = (dim  * dim - dim) + 1; t--; j++) {
-        if (!flt[j]) {
+        if (~flt[j]) {
             (dst+j)->red = (unsigned short)(( (unsigned int) (src+j)->red + (unsigned int) (src+j-1)->red + (unsigned int) (src+j+1)->red + (unsigned int) (src+j-dim)->red + (unsigned int) (src+j-(dim  - 1 ))->red + (unsigned int) (src+j-(dim +1))->red)/6);
             (dst+j)->green = (unsigned short)(( (unsigned int) (src+j)->green+ (unsigned int) (src+j-1)->green+ (unsigned int) (src+j+1)->green+ (unsigned int) (src+j-dim)->green+ (unsigned int) (src+j-(dim  - 1 ))->green+ (unsigned int) (src+j-(dim +1))->green)/6);
             (dst+j)->blue = (unsigned short)(( (unsigned int) (src+j)->blue+ (unsigned int) (src+j-1)->blue+ (unsigned int) (src+j+1)->blue+ (unsigned int) (src+j-dim)->blue+ (unsigned int) (src+j-(dim  - 1 ))->blue+ (unsigned int) (src+j-(dim +1))->blue)/6);
@@ -173,7 +173,7 @@ void bokeh(int dim, pixel *src, short *flt, pixel *dst) {
     }
 
     for (t = (dim - 2), j = 2 * dim - 1; t--; j += dim) {
-        if (!flt[j]) {
+        if (~flt[j]) {
             (dst+j)->red = (unsigned short) ((unsigned int) ((src+j)->red + (unsigned int)(src+j-1)->red + (unsigned int)(src+j-dim)->red +(unsigned int)(src+j+dim)->red + (unsigned int)(src+j-(dim +1))->red + (unsigned int) (src+j+(dim  - 1 ))->red)/6);
             (dst+j)->green =  (unsigned short) ((unsigned int) ((src+j)->green + (unsigned int) (src+j-1)->green + (unsigned int) (src+j-dim)->green + (unsigned int) (src+j+dim)->green + (unsigned int) (src+j-(dim +1))->green + (unsigned int) (src+j+(dim  - 1 ))->green)/6);
             (dst+j)->blue =  (unsigned short) ((unsigned int) ((src+j)->blue + (unsigned int) (src+j-1)->blue + (unsigned int)(src+j-dim)->blue + (unsigned int)(src+j+dim)->blue + (unsigned int)(src+j-(dim +1))->blue + (unsigned int)(src+j+(dim  - 1 ))->blue)/6);
@@ -188,7 +188,7 @@ void bokeh(int dim, pixel *src, short *flt, pixel *dst) {
     while (--j) {
         rij += 2;
 
-        if (!flt[j]) {
+        if (~flt[j]) {
             (dst+j)->red = (unsigned short)(( (unsigned int) (src+j)->red + (unsigned int) (src+j-1)->red + (unsigned int) (src+j+1)->red + (unsigned int) (src+j+dim)->red + (unsigned int) (src+j+(dim +1))->red + (unsigned int) (src+j+(dim  - 1 ))->red)/6);
             (dst+j)->green = (unsigned short)(( (unsigned int) (src+j)->green+ (unsigned int) (src+j-1)->green+ (unsigned int) (src+j+1)->green+ (unsigned int) (src+j+dim)->green+ (unsigned int) (src+j+(dim +1))->green+ (unsigned int) (src+j+(dim  - 1 ))->green)/6);
             (dst+j)->blue = (unsigned short)(( (unsigned int) (src+j)->blue+ (unsigned int) (src+j-1)->blue+ (unsigned int) (src+j+1)->blue+ (unsigned int) (src+j+dim)->blue+ (unsigned int) (src+j+(dim +1))->blue+ (unsigned int) (src+j+(dim  - 1 ))->blue)/6);
@@ -196,37 +196,37 @@ void bokeh(int dim, pixel *src, short *flt, pixel *dst) {
 
         int fake_count = count1;
         while(fake_count--){
-            if (!flt[rij]) {
+            if (~flt[rij]) {
                 (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                 (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                 (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
             } else EQUALIZE_PX(dst[rij], src[rij])
            
-            if (!flt[rij+1]) {
+            if (~flt[rij+1]) {
                 (dst+rij+1)->red = (unsigned short) (((unsigned int) (src+rij+1)->red + (unsigned int)(src+rij+1-1)->red + (unsigned int) (src+rij+1+1)->red + (unsigned int)(src+rij+1-dim)->red + (unsigned int)(src+rij+1-(dim +1))->red + (unsigned int)(src+rij+1-(dim  - 1 ))->red + (unsigned int)(src+rij+1+dim)->red + (unsigned int)(src+rij+1+(dim +1))->red + (unsigned int)(src+rij+1+(dim  - 1 ))->red)/9);
                 (dst+rij+1)->green = (unsigned short) (((unsigned int) (src+rij+1)->green + (unsigned int) (src+rij+1-1)->green + (unsigned int) (src+rij+1+1)->green + (unsigned int) (src+rij+1-dim)->green  + (unsigned int)(src+rij+1-(dim +1))->green + (unsigned int) (src+rij+1-(dim  - 1 ))->green + (unsigned int)(src+rij+1+dim)->green + (unsigned int) (src+rij+1+(dim +1))->green + (unsigned int)(src+rij+1+(dim  - 1 ))->green)/9);
                 (dst+rij+1)->blue = (unsigned short) (((unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij+1-1)->blue + (unsigned int) (src+rij+1+1)->blue+ (unsigned int) (src+rij+1-dim)->blue + (unsigned int) (src+rij+1-(dim +1))->blue + (unsigned int) (src+rij+1-(dim  - 1 ))->blue + (unsigned int) (src+rij+1+dim)->blue + (unsigned int) (src+rij+1+(dim +1))->blue+ (unsigned int) (src+rij+1+(dim  - 1 ))->blue)/9);
             } else EQUALIZE_PX(dst[rij+1], src[rij+1])
            
-             if (!flt[rij+2]) {
+             if (~flt[rij+2]) {
                 (dst+rij+2)->red = (unsigned short) (((unsigned int) (src+rij+2)->red + (unsigned int)(src+rij+2-1)->red + (unsigned int) (src+rij+2+1)->red + (unsigned int)(src+rij+2-dim)->red + (unsigned int)(src+rij+2-(dim +1))->red + (unsigned int)(src+rij+2-(dim  - 1 ))->red + (unsigned int)(src+rij+2+dim)->red + (unsigned int)(src+rij+2+(dim +1))->red + (unsigned int)(src+rij+2+(dim  - 1 ))->red)/9);
                 (dst+rij+2)->green = (unsigned short) (((unsigned int) (src+rij+2)->green + (unsigned int) (src+rij+2-1)->green + (unsigned int) (src+rij+2+1)->green + (unsigned int) (src+rij+2-dim)->green  + (unsigned int)(src+rij+2-(dim +1))->green + (unsigned int) (src+rij+2-(dim  - 1 ))->green + (unsigned int)(src+rij+2+dim)->green + (unsigned int) (src+rij+2+(dim +1))->green + (unsigned int)(src+rij+2+(dim  - 1 ))->green)/9);
                 (dst+rij+2)->blue = (unsigned short) (((unsigned int) (src+rij+2)->blue+ (unsigned int) (src+rij+2-1)->blue + (unsigned int) (src+rij+2+1)->blue+ (unsigned int) (src+rij+2-dim)->blue + (unsigned int) (src+rij+2-(dim +1))->blue + (unsigned int) (src+rij+2-(dim  - 1 ))->blue + (unsigned int) (src+rij+2+dim)->blue + (unsigned int) (src+rij+2+(dim +1))->blue+ (unsigned int) (src+rij+2+(dim  - 1 ))->blue)/9);
             } else EQUALIZE_PX(dst[rij+2], src[rij+2])
 
-            if (!flt[rij+3]) {
+            if (~flt[rij+3]) {
                 (dst+rij+3)->red = (unsigned short) (((unsigned int) (src+rij+3)->red + (unsigned int)(src+rij+3-1)->red + (unsigned int) (src+rij+3+1)->red + (unsigned int)(src+rij+3-dim)->red + (unsigned int)(src+rij+3-(dim +1))->red + (unsigned int)(src+rij+3-(dim  - 1 ))->red + (unsigned int)(src+rij+3+dim)->red + (unsigned int)(src+rij+3+(dim +1))->red + (unsigned int)(src+rij+3+(dim  - 1 ))->red)/9);
                 (dst+rij+3)->green = (unsigned short) (((unsigned int) (src+rij+3)->green + (unsigned int) (src+rij+3-1)->green + (unsigned int) (src+rij+3+1)->green + (unsigned int) (src+rij+3-dim)->green  + (unsigned int)(src+rij+3-(dim +1))->green + (unsigned int) (src+rij+3-(dim  - 1 ))->green + (unsigned int)(src+rij+3+dim)->green + (unsigned int) (src+rij+3+(dim +1))->green + (unsigned int)(src+rij+3+(dim  - 1 ))->green)/9);
                 (dst+rij+3)->blue = (unsigned short) (((unsigned int) (src+rij+3)->blue+ (unsigned int) (src+rij+3-1)->blue + (unsigned int) (src+rij+3+1)->blue+ (unsigned int) (src+rij+3-dim)->blue + (unsigned int) (src+rij+3-(dim +1))->blue + (unsigned int) (src+rij+3-(dim  - 1 ))->blue + (unsigned int) (src+rij+3+dim)->blue + (unsigned int) (src+rij+3+(dim +1))->blue+ (unsigned int) (src+rij+3+(dim  - 1 ))->blue)/9);
             } else EQUALIZE_PX(dst[rij+3], src[rij+3])
            
-             if (!flt[rij+4]) {
+             if (~flt[rij+4]) {
                 (dst+rij+4)->red = (unsigned short) (((unsigned int) (src+rij+4)->red + (unsigned int)(src+rij+4-1)->red + (unsigned int) (src+rij+4+1)->red + (unsigned int)(src+rij+4-dim)->red + (unsigned int)(src+rij+4-(dim +1))->red + (unsigned int)(src+rij+4-(dim  - 1 ))->red + (unsigned int)(src+rij+4+dim)->red + (unsigned int)(src+rij+4+(dim +1))->red + (unsigned int)(src+rij+4+(dim  - 1 ))->red)/9);
                 (dst+rij+4)->green = (unsigned short) (((unsigned int) (src+rij+4)->green + (unsigned int) (src+rij+4-1)->green + (unsigned int) (src+rij+4+1)->green + (unsigned int) (src+rij+4-dim)->green  + (unsigned int)(src+rij+4-(dim +1))->green + (unsigned int) (src+rij+4-(dim  - 1 ))->green + (unsigned int)(src+rij+4+dim)->green + (unsigned int) (src+rij+4+(dim +1))->green + (unsigned int)(src+rij+4+(dim  - 1 ))->green)/9);
                 (dst+rij+4)->blue = (unsigned short) (((unsigned int) (src+rij+4)->blue+ (unsigned int) (src+rij+4-1)->blue + (unsigned int) (src+rij+4+1)->blue+ (unsigned int) (src+rij+4-dim)->blue + (unsigned int) (src+rij+4-(dim +1))->blue + (unsigned int) (src+rij+4-(dim  - 1 ))->blue + (unsigned int) (src+rij+4+dim)->blue + (unsigned int) (src+rij+4+(dim +1))->blue+ (unsigned int) (src+rij+4+(dim  - 1 ))->blue)/9);
             } else EQUALIZE_PX(dst[rij+4], src[rij+4])
             
-            if (!flt[rij+5]) {
+            if (~flt[rij+5]) {
                 (dst+rij+5)->red = (unsigned short) (((unsigned int) (src+rij+5)->red + (unsigned int)(src+rij+5-1)->red + (unsigned int) (src+rij+5+1)->red + (unsigned int)(src+rij+5-dim)->red + (unsigned int)(src+rij+5-(dim +1))->red + (unsigned int)(src+rij+5-(dim  - 1 ))->red + (unsigned int)(src+rij+5+dim)->red + (unsigned int)(src+rij+5+(dim +1))->red + (unsigned int)(src+rij+5+(dim  - 1 ))->red)/9);
                 (dst+rij+5)->green = (unsigned short) (((unsigned int) (src+rij+5)->green + (unsigned int) (src+rij+5-1)->green + (unsigned int) (src+rij+5+1)->green + (unsigned int) (src+rij+5-dim)->green  + (unsigned int)(src+rij+5-(dim +1))->green + (unsigned int) (src+rij+5-(dim  - 1 ))->green + (unsigned int)(src+rij+5+dim)->green + (unsigned int) (src+rij+5+(dim +1))->green + (unsigned int)(src+rij+5+(dim  - 1 ))->green)/9);
                 (dst+rij+5)->blue = (unsigned short) (((unsigned int) (src+rij+5)->blue+ (unsigned int) (src+rij+5-1)->blue + (unsigned int) (src+rij+5+1)->blue+ (unsigned int) (src+rij+5-dim)->blue + (unsigned int) (src+rij+5-(dim +1))->blue + (unsigned int) (src+rij+5-(dim  - 1 ))->blue + (unsigned int) (src+rij+5+dim)->blue + (unsigned int) (src+rij+5+(dim +1))->blue+ (unsigned int) (src+rij+5+(dim  - 1 ))->blue)/9);
@@ -236,25 +236,25 @@ void bokeh(int dim, pixel *src, short *flt, pixel *dst) {
         }
         switch(remainder){
             case 4: 
-                if (!flt[rij]) {
+                if (~flt[rij]) {
                     (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                     (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                     (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
                 } else EQUALIZE_PX(dst[rij], src[rij])
                 rij++;
-                if (!flt[rij]) {
+                if (~flt[rij]) {
                     (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                     (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                     (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
                 } else EQUALIZE_PX(dst[rij], src[rij])
                 rij++; 
-                if (!flt[rij]) {
+                if (~flt[rij]) {
                     (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                     (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                     (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
                 } else EQUALIZE_PX(dst[rij], src[rij])
                 rij++;
-                if (!flt[rij]) {
+                if (~flt[rij]) {
                     (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                     (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                     (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
@@ -262,13 +262,13 @@ void bokeh(int dim, pixel *src, short *flt, pixel *dst) {
                 rij++;  
                 break;     
             case 2: 
-                if (!flt[rij]) {
+                if (~flt[rij]) {
                     (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                     (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                     (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
                 } else EQUALIZE_PX(dst[rij], src[rij])
                 rij++;
-                if (!flt[rij]) {
+                if (~flt[rij]) {
                     (dst+rij)->red = (unsigned short) (((unsigned int) (src+rij)->red + (unsigned int)(src+rij-1)->red + (unsigned int) (src+rij+1)->red + (unsigned int)(src+rij-dim)->red + (unsigned int)(src+rij-(dim +1))->red + (unsigned int)(src+rij-(dim  - 1 ))->red + (unsigned int)(src+rij+dim)->red + (unsigned int)(src+rij+(dim +1))->red + (unsigned int)(src+rij+(dim  - 1 ))->red)/9);
                     (dst+rij)->green = (unsigned short) (((unsigned int) (src+rij)->green + (unsigned int) (src+rij-1)->green + (unsigned int) (src+rij+1)->green + (unsigned int) (src+rij-dim)->green  + (unsigned int)(src+rij-(dim +1))->green + (unsigned int) (src+rij-(dim  - 1 ))->green + (unsigned int)(src+rij+dim)->green + (unsigned int) (src+rij+(dim +1))->green + (unsigned int)(src+rij+(dim  - 1 ))->green)/9);
                     (dst+rij)->blue = (unsigned short) (((unsigned int) (src+rij)->blue+ (unsigned int) (src+rij-1)->blue + (unsigned int) (src+rij+1)->blue+ (unsigned int) (src+rij-dim)->blue + (unsigned int) (src+rij-(dim +1))->blue + (unsigned int) (src+rij-(dim  - 1 ))->blue + (unsigned int) (src+rij+dim)->blue + (unsigned int) (src+rij+(dim +1))->blue+ (unsigned int) (src+rij+(dim  - 1 ))->blue)/9);
